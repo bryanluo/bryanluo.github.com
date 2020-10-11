@@ -3,16 +3,17 @@
 
     <img style="height:auto; border-radius: 50%!important;" alt="" width="260" height="260" src="{{ site.head_url }}">
 
-    <{% if page.layout == "index" %}h2{% else %}div{% endif %} class="site-title">
+    <{% if page.layout == "index" %}h3{% else %}div{% endif %} class="site-title">
       <a href="{{ "/" | relative_url }}">
         {% unless page.url == "/" %}
         <span class="back-arrow icon">{% include svg/back-arrow.svg %}</span>
         {% endunless %}
         {{ site.title }}
       </a>
-    </{% if page.layout == "index" %}h2{% else %}div{% endif %}>
+    </{% if page.layout == "index" %}h3{% else %}div{% endif %}>
     <p class="lead">{{ site.description }}</p>
   </header>
+
   {% include sidebar-nav-links.html %}
 
   {% if site.version %}
