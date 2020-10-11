@@ -5,7 +5,7 @@ highlighter:      rouge
 # Setup
 title:            阿江博客
 tagline:          'bryanluo'
-description:      '这里记录着我的学习过程，学习从写作开始'
+description:      '种一棵树最好的时间是十年前，其次是现在。  - 摘要'
 url:              https://bryanluo.github.io
 baseurl:          '/'
 head_url:         'https://avatars1.githubusercontent.com/u/20706487?s=460&amp;u=a57a7ebc60a7578805ad761a4b64490375fb333e&amp;v=4'
@@ -17,7 +17,7 @@ head_url:         'https://avatars1.githubusercontent.com/u/20706487?s=460&amp;u
 
 author:
   name:           'bryanluo'
-  url:            https://twitter.com/fongandrewc
+  url:            http://hellojiang.top
 
 paginate:         5
 # paginate_path:    '/page:num'
