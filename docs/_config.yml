@@ -4,10 +4,11 @@ highlighter:      rouge
 
 # Setup
 title:            阿江博客
-tagline:          'A Jekyll theme'
+tagline:          'bryanluo'
 description:      '这里记录着我的学习过程，学习从写作开始'
 url:              https://bryanluo.github.io
 baseurl:          '/'
+head_url:         'https://avatars1.githubusercontent.com/u/20706487?s=460&amp;u=a57a7ebc60a7578805ad761a4b64490375fb333e&amp;v=4'
                   # the optional subpath of your site, e.g. "/blog"
                   # NB: This applies to all pages in your Jekyll site.
                   # If you want to move just the blog index pages but keep
