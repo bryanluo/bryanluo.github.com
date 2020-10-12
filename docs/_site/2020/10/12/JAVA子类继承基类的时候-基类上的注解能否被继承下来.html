@@ -1,0 +1,144 @@
+
+<p><strong><em>在子类继承基类（父类）的时候，　基类上一些特殊的属性（如：　注解）能否被继承下类？</em></strong></p>
+
+<p>答案：不能</p>
+
+<p><strong><em>验证过程如下:</em></strong></p>
+
+<ol>
+  <li>自定义一个注解</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.jiang.annotation</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.annotation.*</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @author shijiang.luo
+ * @RESOURCE feign-encoder
+ * @createBy 2020/10/12
+ */</span>
+<span class="nd">@Documented</span>
+<span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="no">T</span> <span class="o">{</span>
+
+    <span class="nc">String</span> <span class="nf">message</span><span class="o">()</span> <span class="k">default</span> <span class="s">"hello"</span><span class="o">;</span>
+
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<ol>
+  <li>编写一个基类(父类)</li>
+</ol>
+
+<p>BaseEntity:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.jiang.entity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.jiang.annotation.T</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Getter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Setter</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @author shijiang.luo
+ * @RESOURCE feign-encoder
+ * @createBy 2020/10/12
+ */</span>
+
+<span class="nd">@T</span><span class="o">(</span><span class="n">message</span> <span class="o">=</span> <span class="s">"这里是基类"</span><span class="o">)</span>
+<span class="nd">@Setter</span>
+<span class="nd">@Getter</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseEntity</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">desc</span><span class="o">;</span>
+
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>编写一个子类(Person) 并且继承基类(BaseEntity)</li>
+</ol>
+
+<p>Person:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package com.jiang.entity<span class="p">;</span>
+
+import lombok.AllArgsConstructor<span class="p">;</span>
+import lombok.Getter<span class="p">;</span>
+import lombok.NoArgsConstructor<span class="p">;</span>
+import lombok.Setter<span class="p">;</span>
+
+/<span class="k">**</span>
+ <span class="k">*</span> @author shijiang.luo
+ <span class="k">*</span> @RESOURCE feign-encoder
+ <span class="k">*</span> @createBy 2020/10/12
+ <span class="k">*</span>/
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Person extends BaseEntity<span class="o">{</span>
+
+    private String name<span class="p">;</span>
+    
+    private Integer age<span class="p">;</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<ol>
+  <li>测试</li>
+</ol>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.jiang</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.jiang.annotation.T</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.jiang.entity.BaseEntity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.jiang.entity.Person</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.extern.slf4j.Slf4j</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="cm">/**
+ * @author shijiang.luo
+ * @RESOURCE feign-encoder
+ * @createBy 2020/10/12
+ */</span>
+<span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">BaseConstructTest</span> <span class="o">{</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+
+        <span class="nc">BaseEntity</span> <span class="n">baseEntity</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BaseEntity</span><span class="o">();</span>
+        <span class="no">T</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">baseEntity</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getAnnotation</span><span class="o">(</span><span class="no">T</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"BaseEntity Annotation : {}"</span><span class="o">,</span> <span class="n">t1</span><span class="o">.</span><span class="na">message</span><span class="o">());</span>
+
+        <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+        <span class="no">T</span> <span class="n">t2</span> <span class="o">=</span> <span class="n">person</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getAnnotation</span><span class="o">(</span><span class="no">T</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Person Annotation: {}"</span><span class="o">,</span> <span class="n">t2</span><span class="o">.</span><span class="na">message</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>根据上面的测试代码，运行的结果如下:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>com.jiang.BaseConstructTest,test
+13:14:20.623 <span class="o">[</span>main] INFO com.jiang.BaseConstructTest - BaseEntity Annotation : 这里是基类
+
+java.lang.NullPointerException
+	at com.jiang.BaseConstructTest.test<span class="o">(</span>BaseConstructTest.java:26<span class="o">)</span>
+	at sun.reflect.NativeMethodAccessorImpl.invoke0<span class="o">(</span>Native Method<span class="o">)</span>
+	at sun.reflect.NativeMethodAccessorImpl.invoke<span class="o">(</span>NativeMethodAccessorImpl.java:62<span class="o">)</span>
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke<span class="o">(</span>DelegatingMethodAccessorImpl.java:43<span class="o">)</span>
+	at java.lang.reflect.Method.invoke<span class="o">(</span>Method.java:498<span class="o">)</span>
+	at org.junit.runners.model.FrameworkMethod<span class="nv">$1</span>.runReflectiveCall<span class="o">(</span>FrameworkMethod.java:50<span class="o">)</span>
+	...
+</code></pre></div></div>
+
+<p><strong><em>总结</em></strong>
+注解是不能被继承下来的。　</p>
+
+<p>那么问题又来了：　注解不是类的属性吗？　为什么不会被子类集成？</p>

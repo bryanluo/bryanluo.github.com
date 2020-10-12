@@ -1,0 +1,65 @@
+
+<h2 id="简单的循环使用">简单的循环使用</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nv">arrays</span><span class="o">=(</span><span class="nb">test </span>hello world<span class="o">)</span>
+
+<span class="k">for </span>var <span class="k">in</span> <span class="k">${</span><span class="nv">arrays</span><span class="p">[@]</span><span class="k">}</span><span class="p">;</span>
+<span class="k">do
+   </span><span class="nb">echo</span> <span class="nv">$var</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<h3 id="bash-脚本字符解析">bash 脚本字符解析</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nv">doc</span><span class="o">=(</span><span class="sb">`</span><span class="nb">cat </span>module.txt<span class="sb">`</span><span class="o">)</span>
+<span class="k">for </span>obj <span class="k">in</span> <span class="k">${</span><span class="nv">doc</span><span class="p">[*]</span><span class="k">}</span>
+<span class="k">do
+  </span><span class="nb">echo</span> <span class="s2">"obj: </span><span class="k">${</span><span class="nv">obj</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nv">array</span><span class="o">=(</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$obj</span> | <span class="nb">tr</span> <span class="s1">'@@'</span>, <span class="s1">' '</span><span class="sb">`</span><span class="o">)</span>
+  <span class="nb">echo</span> <span class="k">${</span><span class="nv">array</span><span class="p">[0]</span><span class="k">}</span>
+  <span class="nb">echo</span> <span class="s2">"----------------------------"</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nv">modules</span><span class="o">=(</span><span class="sb">`</span><span class="nb">cat</span> ./module.txt<span class="sb">`</span><span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">"---------------------------------"</span>
+<span class="nb">echo</span> <span class="s2">"开始执行代码同步..."</span>
+<span class="nb">echo</span> <span class="s2">"---------------------------------"</span>
+
+<span class="k">for </span>module <span class="k">in</span> <span class="k">${</span><span class="nv">modules</span><span class="p">[*]</span><span class="k">}</span>
+<span class="k">do
+    </span>bash ./code-test.sh <span class="k">${</span><span class="nv">module</span><span class="p">%</span>:<span class="p">*</span><span class="k">}</span> <span class="k">${</span><span class="nv">module</span><span class="p">#*</span>:<span class="k">}</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<h3 id="使用-window-系统编写-shell-脚本出现-m-的解决办法">使用 window 系统编写 shell 脚本出现 ^M 的解决办法</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/\r$//'</span> /usr/bin/docker-entrypoint.sh
+</code></pre></div></div>
+
+<h3 id="vscode--简写配置">vscode  简写配置</h3>
+
+<p>设置vscode启动简称</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">vscode</span><span class="o">=</span><span class="s2">"/Users/shijiang/Desktop/Visual</span><span class="se">\ </span><span class="s2">Studio</span><span class="se">\ </span><span class="s2">Code.app/Contents/Resources/app/bin/code"</span>
+</code></pre></div></div>
+
+<h3 id="文本替换">文本替换</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c"># 简单的文本替换</span>
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/old/new/g'</span> fileName
+
+<span class="c"># 有特殊字符的替换方式&lt;这里带有参数&gt;</span>
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s|old|'</span><span class="s2">"</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span><span class="s2">"</span><span class="s1">'|g'</span> fileName
+
+<span class="c"># 带有行数的替换＜这里替换第五行＞</span>
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'5s|old|new|g'</span> fileName
+</code></pre></div></div>

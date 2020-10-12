@@ -1,0 +1,120 @@
+I"�7<h3 id="1-使用-js-判断浏览器是否是-ie-浏览器">1. 使用 JS 判断浏览器是否是 IE 浏览器</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">IEVersion</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">userAgent</span> <span class="o">=</span> <span class="nb">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">;</span> <span class="c1">//取得浏览器的userAgent字符串  </span>
+      <span class="kd">var</span> <span class="nx">isIE</span> <span class="o">=</span> <span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">compatible</span><span class="dl">"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">MSIE</span><span class="dl">"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="c1">//判断是否IE&lt;11浏览器  </span>
+      <span class="kd">var</span> <span class="nx">isEdge</span> <span class="o">=</span> <span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">Edge</span><span class="dl">"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isIE</span><span class="p">;</span> <span class="c1">//判断是否IE的Edge浏览器  </span>
+      <span class="kd">var</span> <span class="nx">isIE11</span> <span class="o">=</span> <span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">'</span><span class="s1">Trident</span><span class="dl">'</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">userAgent</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="dl">"</span><span class="s2">rv:11.0</span><span class="dl">"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">isIE</span><span class="p">)</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">reIE</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="dl">"</span><span class="s2">MSIE (</span><span class="se">\\</span><span class="s2">d+</span><span class="se">\\</span><span class="s2">.</span><span class="se">\\</span><span class="s2">d+);</span><span class="dl">"</span><span class="p">);</span>
+          <span class="nx">reIE</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">userAgent</span><span class="p">);</span>
+          <span class="kd">var</span> <span class="nx">fIEVersion</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nb">RegExp</span><span class="p">[</span><span class="dl">"</span><span class="s2">$1</span><span class="dl">"</span><span class="p">]);</span>
+          <span class="k">if</span><span class="p">(</span><span class="nx">fIEVersion</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="mi">7</span><span class="p">;</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">fIEVersion</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="mi">8</span><span class="p">;</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">fIEVersion</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="mi">9</span><span class="p">;</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">fIEVersion</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="mi">10</span><span class="p">;</span>
+          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="mi">6</span><span class="p">;</span><span class="c1">//IE版本&lt;=7</span>
+          <span class="p">}</span>   
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isEdge</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="dl">'</span><span class="s1">edge</span><span class="dl">'</span><span class="p">;</span><span class="c1">//edge</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">isIE11</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="mi">11</span><span class="p">;</span> <span class="c1">//IE11  </span>
+      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+          <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="c1">//不是ie浏览器</span>
+      <span class="p">}</span>
+  <span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="2--前端组件-checkbox-常用操作案例">2.  前端组件 checkbox 常用操作案例</h3>
+
+<p>页面 checkbox 代码</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"ck"</span> <span class="na">data-id=</span><span class="s">"1"</span> <span class="nt">/&gt;</span>t1
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"ck"</span> <span class="na">data-id=</span><span class="s">"2"</span> <span class="nt">/&gt;</span>t2
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"ck"</span> <span class="na">data-id=</span><span class="s">"3"</span> <span class="nt">/&gt;</span>t3
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"ck"</span> <span class="na">data-id=</span><span class="s">"4"</span> <span class="nt">/&gt;</span>t4
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"ck"</span> <span class="na">data-id=</span><span class="s">"5"</span> <span class="nt">/&gt;</span>t5
+</code></pre></div></div>
+
+<p>全选与反选的具体代码实现</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span> <span class="nx">全选</span>
+<span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[name=ck]:checkbox</span><span class="dl">'</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="dl">'</span><span class="s1">checked</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="err">#</span> <span class="nx">反选</span>
+<span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[name=ck]:checkbox</span><span class="dl">'</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="dl">'</span><span class="s1">checked</span><span class="dl">'</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<p>提取一组已选CheckBox的ID</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">ids</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
+<span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[name=ck]:checked</span><span class="dl">'</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">ids</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="dl">'</span><span class="s1">data-id</span><span class="dl">'</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<h3 id="3-设置最小高度-超过该高度将自适应">3. 设置最小高度， 超过该高度将自适应</h3>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">min-height</span><span class="o">:</span> <span class="nt">param</span> <span class="nt">pax</span><span class="o">;</span>
+<span class="nt">height</span><span class="o">:</span> <span class="nt">auto</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="4-js-实现时间戳和时间格式的转换">4. JS 实现时间戳和时间格式的转换</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">timestamp</span> <span class="o">=</span> <span class="mi">124561564156456</span><span class="p">;</span>
+
+<span class="c1">// 时间戳转时间</span>
+
+<span class="kd">var</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">timestamp</span><span class="p">);</span>
+
+<span class="c1">// 将时间转为固定字符串</span>
+
+<span class="kd">var</span> <span class="nx">dateFormat</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">toLocaleDateString</span><span class="p">().</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">\\</span><span class="sr">g, '-'</span><span class="se">)</span><span class="err">;
+</span>
+<span class="c1">// 将时间转为时间戳</span>
+
+<span class="kd">var</span> <span class="nx">timestamp</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">()).</span><span class="nx">valueOf</span><span class="p">();</span>
+
+<span class="c1">// 通过原型方法</span>
+
+<span class="kd">var</span> <span class="nx">timestamp</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">():</span>
+
+<span class="c1">// 将时间转为一个数值类型</span>
+
+<span class="kd">var</span> <span class="nx">timestamp</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+
+</code></pre></div></div>
+
+<h2 id="5-jquery-加载类型">5. Jquery 加载类型</h2>
+
+<p>数据加载完成执行</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="kd">function</span><span class="p">(){});</span>
+</code></pre></div></div>
+
+<p>进入页面就执行，不管数据是否加载完成</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){});</span>
+
+<span class="nx">or</span> 
+
+<span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">({});</span>
+</code></pre></div></div>
+
+<h3 id="6-获取form表单填写的所有数据">6. 获取form表单填写的所有数据</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">formData</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#formData</span><span class="dl">'</span><span class="p">).</span><span class="nx">serialize</span><span class="p">();</span>
+
+</code></pre></div></div>
+:ET

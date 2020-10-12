@@ -1,0 +1,118 @@
+
+<h2 id="先安装-ssh--系统一般安装好的也不排除最小系统安装没有ssh环境">先安装 ssh ， 系统一般安装好的，也不排除最小系统安装没有ssh环境</h2>
+
+<p>1、安装依赖组件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> curl policycoreutils-python openssh-server
+</code></pre></div></div>
+
+<p>2、设置开机自启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>sshd
+
+</code></pre></div></div>
+
+<p>3、启动 sshd</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl start sshd
+</code></pre></div></div>
+<h2 id="关闭防火墙或者开放-http-的端口">关闭防火墙，或者开放 HTTP 的端口</h2>
+
+<p>刷新防火墙规则</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iptables <span class="nt">-F</span>
+
+</code></pre></div></div>
+<h2 id="安装邮件服务">安装邮件服务</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install </span>postfix
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>postfix
+<span class="nb">sudo </span>systemctl start postfix
+</code></pre></div></div>
+
+<p>出现问题解决：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">fatal</span><span class="pi">:</span> <span class="na">parameter inet_interfaces</span><span class="pi">:</span> <span class="s">no local interface found for ::1</span>
+</code></pre></div></div>
+
+<p>解决办法:</p>
+
+<blockquote>
+  <p>vi /etc/postfix/main.cf</p>
+</blockquote>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 可以看到这里的配置文件配置的是localhost，问题就出现在这里</span>
+<span class="s">inet_interfaces = localhost</span>
+<span class="s">inet_protocols = all</span>
+
+<span class="c1"># 我们把他改成</span>
+<span class="s">inet_interfaces = all</span>
+<span class="s">inet_protocols = all</span>
+</code></pre></div></div>
+
+<h3 id="从官网获取-gitlab-的安装脚本-主要是添加-gitlab-的-yum-源">从官网获取 gitlab 的安装脚本, 主要是添加 gitlab 的 yum 源</h3>
+
+<p>输出到文件里是为了看下下载的脚本内容</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ee/script.rpm.sh <span class="o">&gt;</span> rpm.sh
+
+<span class="nb">chmod</span> +x rpm.sh
+
+./rpm.sh
+</code></pre></div></div>
+
+<p>2、 安装 Gitlab</p>
+
+<blockquote>
+  <p>yum install -y gitlab-ee</p>
+</blockquote>
+
+<p>查看 gitlab-ee 安装内容</p>
+
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>rpm -ql gitlab-ee</td>
+        <td>less</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>配置 gitlab 的监听地址与端口， 主要路径：/etc/gitlab/gitlab.rb</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">external_url 'http://gitlab.ai-he.me'</span>
+
+<span class="s">nginx['listen_addresses'] = ['0.0.0.0', '[::]']</span>
+
+<span class="s">nginx['listen_port'] = </span><span class="m">78780</span>
+
+</code></pre></div></div>
+
+<p>详细配置： <a href="https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab">gitlab 详细配置</a></p>
+
+<h4 id="更新配置">更新配置</h4>
+
+<blockquote>
+  <p>sudo gitlab-ctl reconfigure</p>
+</blockquote>
+
+<p>重启 tiglab</p>
+
+<blockquote>
+  <p>gitlab-ctl restart</p>
+</blockquote>
+
+<p>查看命令帮助信息</p>
+
+<blockquote>
+  <p>gitlab-ctl –help</p>
+</blockquote>
+
+<p>创建用户账号:</p>
+
+<p>http://120.25.157.8:5050/admin</p>
+
+<p>root/gziiim2020</p>

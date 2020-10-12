@@ -1,0 +1,89 @@
+I"i<p>ue# 使用 Caddy Web 服务器构建 docker 镜像</p>
+
+<h2 id="dockerfile">Dockerfile</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">FROM hub.chinaopen.ai/library/node-builder:10-alpine as builder</span> 
+
+<span class="s">COPY . /workspace</span>
+<span class="s">WORKDIR /workspace</span>
+<span class="s">COPY docker/serverConfig.json /workspace/public/</span>
+<span class="s">RUN yarn --registry=https://registry.npm.taobao.org &amp;&amp; yarn build</span>
+
+<span class="c1"># FROM abiosoft/caddy:1.0.3-no-stats</span>
+<span class="s">FROM hub.chinaopen.ai/library/caddy:0.11.1</span>
+<span class="s">LABEL maintainer "shijiang.luo &lt;shijiang.luo@gziiim.com&gt;"</span>
+
+<span class="s">COPY --from=builder /workspace/dist /srv</span>
+<span class="s">COPY docker/docker-entrypoint.sh /usr/bin/</span>
+<span class="s">COPY docker/Caddyfile /etc/Caddyfile</span>
+
+<span class="s">ENV API_URL=istio-ingressgateway.istio-system:80</span>
+<span class="s">ENV MODELER_URL=modeler:2015</span>
+
+<span class="s">RUN chmod u+x /usr/bin/docker-entrypoint.sh</span>
+<span class="s">ENTRYPOINT [ "/usr/bin/docker-entrypoint.sh" ]</span>
+<span class="s">CMD ["caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=false"]</span>
+</code></pre></div></div>
+
+<h2 id="caddyfile">Caddyfile</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">0.0.0.0:2015</span>
+<span class="s">log stdout</span>
+<span class="s">errors stdout</span>
+<span class="s">proxy /api {$API_URL} {</span>
+    <span class="s">transparent</span>
+    <span class="s">without /api</span>
+<span class="err">}</span>
+
+<span class="s">proxy /modeler {$MODELER_URL} {</span>
+    <span class="s">transparent</span>
+
+</code></pre></div></div>
+
+<p>支持 http 转 https</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="s">0.0.0.0:2020</span>
+<span class="s">log stdout</span>
+<span class="s">errors stdout</span>
+
+<span class="s">proxy /api {$API_URL} {</span>
+    <span class="s">transparent</span>
+    <span class="s">without /api</span>
+<span class="err">}</span>
+
+<span class="s">proxy /modeler {$MODELER_URL} {</span>
+    <span class="s">transparent</span>
+<span class="err">}</span>
+
+<span class="s">proxy /all/upload {$UPLOAD_URL} {</span>
+    <span class="s">transparent</span>
+<span class="err">}</span>
+
+<span class="s">header / {</span>
+    <span class="s">Content-Security-Policy  "upgrade-insecure-requests"</span>
+<span class="err">}</span>
+
+</code></pre></div></div>
+
+<h2 id="serverconfigjson">serverConfig.json</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">{</span>
+  <span class="s2">"</span><span class="s">apiUrl"</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/api"</span><span class="pi">,</span>
+  <span class="s2">"</span><span class="s">modelerUrl"</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/modeler"</span>
+<span class="pi">}</span>
+</code></pre></div></div>
+
+<h3 id="docker-entrypointsh">docker-entrypoint.sh</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nb">exec</span> <span class="s2">"</span><span class="nv">$@</span><span class="s2">"</span>
+</code></pre></div></div>
+
+<h2 id="使用-window-系统编写-shell-脚本出现-m-的解决办法">使用 window 系统编写 shell 脚本出现 ^M 的解决办法</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/\r$//'</span> /usr/bin/docker-entrypoint.sh
+</code></pre></div></div>
+:ET
