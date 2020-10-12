@@ -1,3 +1,12 @@
+---
+layout: category
+categories:
+  - Linux
+tags:
+  - bash
+last_modified_at: 2020-09-29T12:25:10-05:00
+---
+
 
 ## 先安装 ssh ， 系统一般安装好的，也不排除最小系统安装没有ssh环境
 

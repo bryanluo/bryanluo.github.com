@@ -1,3 +1,14 @@
+---
+layout: category
+categories:
+  - Linux
+tags:
+  - bash
+last_modified_at: 2020-09-28T12:25:10-05:00
+---
+
+
+
 ##### 设置定时器
 
 1、 查询定时任务状态
