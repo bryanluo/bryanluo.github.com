@@ -9,7 +9,11 @@ last_modified_at: 2020-09-29T12:25:10-05:00
 
 linux 搭建 gitlab 过程记录.
 
+---
+
 ## 先安装 ssh ， 系统一般安装好的，也不排除最小系统安装没有ssh环境
+
+ -
 
 1、安装依赖组件
 
@@ -31,6 +35,8 @@ sudo systemctl enable sshd
 ```bash
 sudo systemctl start sshd
 ```
+
+---
 ## 关闭防火墙，或者开放 HTTP 的端口
 
 刷新防火墙规则
@@ -39,6 +45,8 @@ sudo systemctl start sshd
 iptables -F
 
 ```
+
+---
 ## 安装邮件服务
 
 ```bash
@@ -67,6 +75,7 @@ inet_interfaces = all
 inet_protocols = all
 ```
 
+---
 ### 从官网获取 gitlab 的安装脚本, 主要是添加 gitlab 的 yum 源
 
 输出到文件里是为了看下下载的脚本内容
@@ -100,6 +109,7 @@ nginx['listen_port'] = 78780
 
 详细配置： [gitlab 详细配置](https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab)
 
+---
 #### 更新配置
 
 > sudo gitlab-ctl reconfigure

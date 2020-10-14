@@ -9,6 +9,8 @@ last_modified_at: 2020-09-28T12:25:10-05:00
 
 bash 常用命令记录。
 
+---
+
 ## 简单的循环使用
 
 ```bash
@@ -21,6 +23,7 @@ do
 done
 ```
 
+---
 
 ### bash 脚本字符解析
 
@@ -49,12 +52,15 @@ do
     bash ./code-test.sh ${module%:*} ${module#*:}
 done
 ```
+---
 
 ### 使用 window 系统编写 shell 脚本出现 ^M 的解决办法
 
 ```bash
 sed -i 's/\r$//' /usr/bin/docker-entrypoint.sh
 ```
+
+---
 
 ### vscode  简写配置
 
@@ -63,6 +69,8 @@ sed -i 's/\r$//' /usr/bin/docker-entrypoint.sh
 ```bash
 alias vscode="/Users/shijiang/Desktop/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 ```
+
+---
 
 ### 文本替换
 

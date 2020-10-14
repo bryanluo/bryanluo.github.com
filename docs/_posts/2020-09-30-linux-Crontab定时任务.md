@@ -9,6 +9,8 @@ last_modified_at: 2020-09-28T12:25:10-05:00
 
 定时任务学习笔记。
 
+---
+
 ##### 设置定时器
 
 1、 查询定时任务状态
@@ -40,6 +42,7 @@ service crond stop
 ```bash
 chkconfig –level 35 crond on
 ```
+---
 
 ##### 配置定时任务
 1、语法: crontab [-u <用户名称>][配置文件] 或 contab [-u <用户名称>][-elr]
@@ -62,6 +65,8 @@ chkconfig –level 35 crond on
 - #* * * * * command to be executed
 
 3、配置的目标位置在:  vi /etc/crontab 
+
+---
 
 ##### 使用参数
 
