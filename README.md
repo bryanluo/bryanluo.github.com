@@ -11,7 +11,7 @@ yekyll serve
 
 ```bash
 
-yekyll serve
+yekyll clean
 
 ```
 
