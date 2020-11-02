@@ -1,36 +1,35 @@
-# Dependencies
-markdown:         kramdown
-highlighter:      rouge
+baseurl: "/bryanluo" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
-# Setup
-title:            阿江博客
-tagline:          'bryanluo'
-description:      '种一棵树最好的时间是十年前，其次是现在。  - 摘要'
-url:              https://bryanluo.github.io
-baseurl:          '/'
-head_url:         'https://avatars1.githubusercontent.com/u/20706487?s=460&amp;u=a57a7ebc60a7578805ad761a4b64490375fb333e&amp;v=4'
-                  # the optional subpath of your site, e.g. "/blog"
-                  # NB: This applies to all pages in your Jekyll site.
-                  # If you want to move just the blog index pages but keep
-                  # other pages at root, see the paginate_path and
-                  # sidebar_blog_link below.
 
-author:
-  name:           'bryanluo'
-  url:            http://hellojiang.top
-
-paginate:         10
-# paginate_path:    '/page:num'
-                    # Or '/blog/page:num' if you want to move your index pages
-
+# Build settings
+markdown: kramdown
+permalink: pretty
 plugins:
-  - jekyll-feed
-  - jekyll-gist
   - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll/tagging
 
-# Sidebar link settings
-sidebar_home_link:  true
-# sidebar_blog_link:  '/blog'   # By default, your home page is your blog
-                                # page. If you change your paginate_path,
-                                # set this to the root of the paginate_path
-                                # to enable a separate blog link.
+paginate: 5
+paginate_path: "/page/:num"
+
+
+# Pages Path
+defaults:
+  - scope:
+      path: '_pages'
+    values:
+      permalink: /:basename:output_ext
+
+include:
+  - _pages
+
+
+# Tags
+tag_page_dir:         tag
+tag_page_layout:      tag_page
+tag_permalink_style:  pretty
+
+sass:
+  sass_dir: _sass
+  style: compressed

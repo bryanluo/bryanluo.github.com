@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 
-  {% include head.html %}
+{% include head.html %}
 
-  <body class="{{ page.layout }}{% if page.url == '/' %} home{% endif %}">
+<body>
 
-    {% include sidebar.html %}
+  {% if site.data.settings.google-analytics %}
+  {% include google-analytics.html %}
+  {% endif %}
 
-    <main class="container">
-      {{ content }}
-    </main>
+  {% include header.html %}
 
-    {% include custom-foot.html %}
-  </body>
+  <!-- begin content -->
+  <main class="content" aria-label="Content">
+    {{ content }}
+  </main>
+  <!-- end content -->
+
+  <div class="top ion ion-ios-arrow-up" title="Top"></div>
+
+  {% include search.html %}
+
+  {% include footer.html %}
+
+  {% include javascripts.html %}
+</body>
+
 </html>

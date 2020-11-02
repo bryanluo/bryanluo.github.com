@@ -1,0 +1,94 @@
+---
+layout: post
+title:  "bash 常用命令"
+date:   2020-09-28 18:05:55 +0300
+image:  10.jpg
+tags:   linux
+---
+
+
+bash 常用命令记录。
+
+---
+
+## 简单的循环使用
+
+```bash
+
+arrays=(test hello world)
+
+for var in ${arrays[@]};
+do
+   echo $var
+done
+```
+
+---
+
+### bash 脚本字符解析
+
+```bash
+#!/bin/bash
+doc=(`cat module.txt`)
+for obj in ${doc[*]}
+do
+  echo "obj: ${obj}"
+  array=(`echo $obj | tr '@@', ' '`)
+  echo ${array[0]}
+  echo "----------------------------"
+done
+```
+
+```bash
+#!/bin/bash
+
+modules=(`cat ./module.txt`)
+echo "---------------------------------"
+echo "开始执行代码同步..."
+echo "---------------------------------"
+
+for module in ${modules[*]}
+do
+    bash ./code-test.sh ${module%:*} ${module#*:}
+done
+```
+---
+
+### 使用 window 系统编写 shell 脚本出现 ^M 的解决办法
+
+```bash
+sed -i 's/\r$//' /usr/bin/docker-entrypoint.sh
+```
+
+---
+
+### vscode  简写配置
+
+设置vscode启动简称
+
+```bash
+alias vscode="/Users/shijiang/Desktop/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
+```
+
+---
+
+### 文本替换
+
+```bash
+
+# 简单的文本替换
+
+sed -i 's/old/new/g' fileName
+
+# 有特殊字符的替换方式<这里带有参数>
+
+sed -i 's|old|'"${1}"'|g' fileName
+
+# 带有行数的替换＜这里替换第五行＞
+
+sed -i '5s|old|new|g' fileName
+```
+
+[jekyll-docs]: https://jekyllrb.com/docs/home
+[jekyll-gh]:   https://github.com/jekyll/jekyll
+[jekyll-talk]: https://talk.jekyllrb.com/
