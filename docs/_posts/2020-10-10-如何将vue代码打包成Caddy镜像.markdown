@@ -1,0 +1,113 @@
+---
+layout: post
+title:  将 Vue 打包成 Nginx 为底层的 Caddy 镜像
+date:   2020-10-11 20:00:00 +0300
+image:  04.jpg
+tags:   Docker
+---
+
+vue 代码打包成以 caddy 作为底层的 docker 镜像。
+
+---
+
+***Dockerfile***
+
+``` yaml
+FROM hub.chinaopen.ai/library/node-builder:10-alpine as builder 
+
+COPY . /workspace
+WORKDIR /workspace
+COPY docker/serverConfig.json /workspace/public/
+RUN yarn --registry=https://registry.npm.taobao.org && yarn build
+
+# FROM abiosoft/caddy:1.0.3-no-stats
+FROM hub.chinaopen.ai/library/caddy:0.11.1
+LABEL maintainer "shijiang.luo <shijiang.luo@gziiim.com>"
+
+COPY --from=builder /workspace/dist /srv
+COPY docker/docker-entrypoint.sh /usr/bin/
+COPY docker/Caddyfile /etc/Caddyfile
+
+ENV API_URL=istio-ingressgateway.istio-system:80
+ENV MODELER_URL=modeler:2015
+
+RUN chmod u+x /usr/bin/docker-entrypoint.sh
+ENTRYPOINT [ "/usr/bin/docker-entrypoint.sh" ]
+CMD ["caddy", "--conf", "/etc/Caddyfile", "--log", "stdout", "--agree=false"]
+```
+
+---
+
+***Caddyfile***
+
+```yaml
+0.0.0.0:2015
+log stdout
+errors stdout
+proxy /api {$API_URL} {
+    transparent
+    without /api
+}
+
+proxy /modeler {$MODELER_URL} {
+    transparent
+
+```
+
+支持 http 转 https
+
+```yaml
+
+0.0.0.0:2020
+log stdout
+errors stdout
+
+proxy /api {$API_URL} {
+    transparent
+    without /api
+}
+
+proxy /modeler {$MODELER_URL} {
+    transparent
+}
+
+proxy /all/upload {$UPLOAD_URL} {
+    transparent
+}
+
+header / {
+    Content-Security-Policy  "upgrade-insecure-requests"
+}
+
+```
+
+---
+
+***serverConfig.json***
+
+
+```yaml
+{
+  "apiUrl": "/api",
+  "modelerUrl": "/modeler"
+}
+```
+
+---
+
+***docker-entrypoint.sh***
+
+```bash
+#!/bin/sh
+set -e
+
+exec "$@"
+```
+
+---
+
+***使用 window 系统编写 shell 脚本出现 ^M 的解决办法***
+
+```bash
+sed -i 's/\r$//' /usr/bin/docker-entrypoint.sh
+```
