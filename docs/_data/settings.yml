@@ -1,6 +1,6 @@
 #-------------------------------
 # General Site Settings
-title: heyrogs日记
+title: timesJ日记
 logo: logo.svg # You can add own logo.
 description: 好记心不如烂笔头
 
@@ -10,7 +10,7 @@ description: 好记心不如烂笔头
 author:
   name: Bryanluo
   image: 01.jpg
-  say-hello: Hello, I’m <strong>Bryanluo</strong>
+  say-hello: 嗨，我是<strong>timesJ</strong>
   bio: Java开发工程师, 有大数据开发经历, <strong>爱学习</strong>, <strong>爱记录</strong> 是我的优点。下面是我的日常学习笔记。
 
 
